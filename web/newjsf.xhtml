@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+        
+        <title>Edit Customer Record</title>
+       
+        <style type="text/css">
+        .updateBtnStyle {
+            width: 80px !important;         
+        }
+    </style>
+    </h:head>
+    <h:body>
+        <h:form id="form" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <h2 style="text-align: center" class="col-sm-4">Edit Customer Record</h2>
+            </div>
+            <hr/>
+            <div class="form-group">
+                <h:outputLabel for="username" class="control-label col-sm-2">User Name:</h:outputLabel>
+                <div class="col-sm-4">
+                    <h:inputText id="name-id" value="#{editRecordObj.name}" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="phone" class="control-label col-sm-2">Phone:</h:outputLabel>
+                <div class="col-sm-4">
+                    <h:inputText id="phone" value="#{editRecordObj.phone}" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="destination" class="control-label col-sm-2">Destination:</h:outputLabel>
+                <div class="col-sm-4">
+                    <h:inputText id="destination" value="#{editRecordObj.destination}" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="start" class="control-label col-sm-2">Start:</h:outputLabel>
+                <div class="col-sm-4">
+                     <h:inputText id="start" value="#{editRecordObj.start}" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="fee" class="control-label col-sm-2">Fee:</h:outputLabel>
+                <div class="col-sm-4">
+                    <h:inputText id="fee" value="#{editRecordObj.fee}"  class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-4">
+                    <h:commandButton value="Update" action="#{customerBean.updateCustomerDetails(editRecordObj)}" class="btn btn-primary updateBtnStyle" />
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>
