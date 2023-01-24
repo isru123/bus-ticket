@@ -8,7 +8,7 @@
 <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
   
-<h:outputStylesheet library="css" name="bootstrap.min.css" />
+
 <style type="text/css">
         .btnWidth {
             width: 80px;
@@ -25,7 +25,7 @@
         </div>
         <hr/>
         <div class="form-group">
-            <h:outputLabel for="username" class="control-label col-sm-4">User Name:</h:outputLabel>
+            <h:outputLabel for="username" class="control-label col-sm-4">Customer Name:</h:outputLabel>
             <div class="col-sm-4">
                 <h:inputText id="name-id" value="#{customerBean.name}" class="form-control" validatorMessage="User name is required">
                     <f:validateRequired />
@@ -51,7 +51,7 @@
         <div class="form-group">
             <h:outputLabel for="start" class="control-label col-sm-4">Start:</h:outputLabel>
             <div class="col-sm-4">
-                <h:inputText id="start" value="#{customerBean.start}" validatorMessage="Start is required">
+                <h:inputText id="start" value="#{customerBean.start}" class="form-control" validatorMessage="Start is required">
                     <f:validateRequired/>
                 </h:inputText>
             </div>
@@ -59,9 +59,9 @@
         <div class="form-group">
             <h:outputLabel for="fee" class="control-label col-sm-4">Fee:</h:outputLabel>
             <div class="col-sm-4">
-                <h:inputTextarea id="fee" value="#{customerBean.fee}" cols="50" rows="5" class="form-control" validatorMessage="Fee is required">
+                <h:inputText id="fee" value="#{customerBean.fee}"  class="form-control" validatorMessage="Fee is required">
                     <f:validateRequired/>
-                </h:inputTextarea>
+                </h:inputText>
             </div>
         </div>
         <div class="form-group">
