@@ -4,14 +4,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"  
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"> 
-<head>
+<h:head>
   <title>Bus-Ticket Booking</title>
   
   <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
   
-  <h:outputStylesheet library="css" name="bootstrap.min.css" />
+  
   <style type="text/css">
         .tableUpdated {
             width: 90% !important;
@@ -21,7 +21,7 @@
             margin: 17px;
         }     
     </style>
-</head>
+</h:head>
 <h:body>
     <center><h2><h:outputText value="Customer Records"/></h2></center>
     <h:form id="customerForm">
@@ -32,25 +32,25 @@
             </h:column>
             <h:column>
                 <f:facet name="header">Customer Name</f:facet>
-                <h:outputText value="#{customerBean.name}" />
+                <h:outputText value="#{customer.name}" />
             </h:column>
             <h:column>
                 <f:facet name="header">Phone Number</f:facet>
-                <h:outputText value="#{customerBean.phone}" />
+                <h:outputText value="#{customer.phone}" />
             </h:column>
             <h:column>
                 <f:facet name="header">Start</f:facet>
-                <h:outputText value="#{customerBean.start}" />
+                <h:outputText value="#{customer.start}" />
             </h:column>
             
              <h:column>
                 <f:facet name="header">Destination</f:facet>
-                <h:outputText value="#{customerBean.destination}" />
+                <h:outputText value="#{customer.destination}" />
             </h:column>
             
             <h:column>
                 <f:facet name="header">Fee</f:facet>
-                <h:outputText value="#{customerBean.fee}" />
+                <h:outputText value="#{customer.fee}" />
             </h:column>
             <h:column>
                 <f:facet name="header">Update</f:facet>
@@ -58,7 +58,7 @@
             </h:column>
             <h:column>
                 <f:facet name="header">Delete</f:facet>
-                <h:commandButton action="#{customerBean.deleteCustomerRecord(customer.id)}" value="Delete" class="btn btn-danger" />
+                <h:commandButton action="#{customer.deleteCustomerRecord(customer.id)}" value="Delete" class="btn btn-danger" />
             </h:column>
         </h:dataTable>
         <center>
