@@ -14,9 +14,9 @@ import javax.faces.context.FacesContext;
  
 public class DatabaseOperation {
  
-    public static Statement stmtObj;
-    public static Connection connObj;
-    public static ResultSet resultSetObj;
+    public static Statement stmt;
+    public static Connection conn;
+    public static ResultSet resultSet;
     public static PreparedStatement pstmt;
  
     public static Connection getConnection(){  
@@ -25,107 +25,108 @@ public class DatabaseOperation {
             String db_url ="jdbc:oracle:thin:@localhost:1521:xe",
                     db_userName = "GENET",
                     db_password = "32is65ra98el!L";
-            connObj = DriverManager.getConnection(db_url,db_userName,db_password);
-            if (connObj != null) {
+            conn = DriverManager.getConnection(db_url,db_userName,db_password);
+            if (conn != null) {
           System.out.println("Connected database successfully...");
        } else {
-           System.out.println("nFailed to connect to Oracle DB");
+           System.out.println("Failed to connect to Oracle DB");
        }
         } catch(Exception sqlException) {  
             sqlException.printStackTrace();
         }  
-        return connObj;
+        return conn;
     }
  
     public static ArrayList getCustomerListFromDB() {
         ArrayList customersList = new ArrayList();  
         try {
-            stmtObj = getConnection().createStatement();    
-            resultSetObj = stmtObj.executeQuery("select * from CUSTOMER_INFO");    
-            while(resultSetObj.next()) {  
-                CustomerBean stuObj = new CustomerBean(); 
-                stuObj.setId(resultSetObj.getInt("customer_id"));  
-                stuObj.setName(resultSetObj.getString("customer_name"));  
-                stuObj.setPhone(resultSetObj.getInt("customer_phone"));  
-                stuObj.setDestination(resultSetObj.getString("customer_destination"));  
-                stuObj.setStart(resultSetObj.getString("customer_start"));  
-                stuObj.setFee(resultSetObj.getInt("customer_fee"));  
-                customersList.add(stuObj);  
+            stmt = getConnection().createStatement();    
+            resultSet = stmt.executeQuery("select * from CUSTOMER_INFO");    
+            while(resultSet.next()) {  
+                CustomerBean stu = new CustomerBean(); 
+                
+                stu.setId(resultSet.getInt("customer_id"));  
+                stu.setName(resultSet.getString("customer_name"));  
+                stu.setPhone(resultSet.getInt("customer_phone"));  
+                stu.setDestination(resultSet.getString("customer_destination"));  
+                stu.setStart(resultSet.getString("customer_start"));  
+                stu.setFee(resultSet.getInt("customer_fee"));  
+                customersList.add(stu);  
             }   
-            System.out.println("Total Records Fetched: " + customersList.size());
-            connObj.close();
+            System.out.println("Total Records: " + customersList.size());
+            conn.close();
         } catch(Exception sqlException) {
             sqlException.printStackTrace();
         } 
         return customersList;
     }
  
-    public static String saveCustomerDetailsInDB(CustomerBean newCustomerObj) {
+    public static String saveCustomerDetailsInDB(CustomerBean saveCustomer) {
         int saveResult = 0;
-        String navigationResult = "";
+        String Result = "";
         try {      
-            pstmt = getConnection().prepareStatement("insert into CUSTOMER_INFO (customer_name, customer_phone, customer_destination, customer_start, customer_fee) values (?, ?, ?, ?, ?)");         
-            pstmt.setString(1, newCustomerObj.getName());
-            pstmt.setInt(2, newCustomerObj.getPhone());
-            pstmt.setString(3, newCustomerObj.getDestination());
-            pstmt.setString(4, newCustomerObj.getStart());
-            pstmt.setInt(5, newCustomerObj.getFee());
+            pstmt = getConnection().prepareStatement("insert into CUSTOMER_INFO (customer_name, customer_phone, customer_destination, customer_start, customer_fee) values (?, ?, ?, ?, ?)" + " ORDER BY first ASC");         
+            pstmt.setString(1, saveCustomer.getName());
+            pstmt.setInt(2, saveCustomer.getPhone());
+            pstmt.setString(3, saveCustomer.getDestination());
+            pstmt.setString(4, saveCustomer.getStart());
+            pstmt.setInt(5, saveCustomer.getFee());
             saveResult = pstmt.executeUpdate();
-            connObj.close();
+            conn.close();
         } catch(Exception sqlException) {
             sqlException.printStackTrace();
         }
         if(saveResult !=0) {
-            navigationResult = "newjsf1.xhtml?faces-redirect=true";
+            Result = "newjsf1.xhtml";
         } else {
-            navigationResult = "response.xhtml?faces-redirect=true";
+            Result = "response.xhtml";
         }
-        return navigationResult;
+        return Result;
     }
  
     public static String editCustomerRecordInDB(int customerId) {
        CustomerBean editRecord = null;
         System.out.println("editCustomerRecordInDB() : Customer Id: " + customerId);
  
-        /* Setting The Particular Student Details In Session */
-        Map<String,Object> sessionMapObj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+       
+        Map<String,Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
  
         try {
-            stmtObj = getConnection().createStatement();    
-            resultSetObj = stmtObj.executeQuery("select * from CUSTOMER_INFO where customer_id = " + customerId);    
-            if(resultSetObj != null) {
-                resultSetObj.next();
+            stmt = getConnection().createStatement();    
+            resultSet = stmt.executeQuery("select * from CUSTOMER_INFO where customer_id = " + customerId);    
+            if(resultSet != null) {
+                resultSet.next();
                 editRecord = new CustomerBean(); 
-                editRecord.setId(resultSetObj.getInt("customer_id"));
-                editRecord.setName(resultSetObj.getString("customer_name"));
-                editRecord.setPhone(resultSetObj.getInt("customer_phone"));
-                editRecord.setStart(resultSetObj.getString("customer_start"));
-                editRecord.setFee(resultSetObj.getInt("customer_fee"));
-                editRecord.setDestination(resultSetObj.getString("customer_destination")); 
+                editRecord.setId(resultSet.getInt("customer_id"));
+                editRecord.setName(resultSet.getString("customer_name"));
+                editRecord.setPhone(resultSet.getInt("customer_phone"));
+                editRecord.setStart(resultSet.getString("customer_start"));
+                editRecord.setFee(resultSet.getInt("customer_fee"));
+                editRecord.setDestination(resultSet.getString("customer_destination")); 
             }
-            sessionMapObj.put("editRecordObj", editRecord);
-            connObj.close();
+            sessionMap.put("editRecordObj", editRecord);
+            conn.close();
         } catch(Exception sqlException) {
             sqlException.printStackTrace();
         }
-        return "/newjsf.xhtml?faces-redirect=true";
+        return "/newjsf.xhtml";
     }
  
-    public static String updateCustomerDetailsInDB(CustomerBean updateCustomerObj) {
+    public static String updateCustomerDetailsInDB(CustomerBean update) {
         try {
             pstmt = getConnection().prepareStatement("update CUSTOMER_INFO set customer_name=?, customer_phone=?, customer_destination=?,customer_start=?, customer_fee=? where customer_id=?");    
-            pstmt.setString(1,updateCustomerObj.getName());  
-            pstmt.setInt(2,updateCustomerObj.getPhone());  
-            pstmt.setString(3,updateCustomerObj.getDestination());  
-            pstmt.setString(4,updateCustomerObj.getStart());  
-            pstmt.setInt(5,updateCustomerObj.getFee());  
-            pstmt.setInt(6,updateCustomerObj.getId());  
+            pstmt.setString(1,update.getName());  
+            pstmt.setInt(2,update.getPhone());  
+            pstmt.setString(3,update.getDestination());  
+            pstmt.setString(4,update.getStart());  
+            pstmt.setInt(5,update.getFee());  
+            pstmt.setInt(6,update.getId());  
             pstmt.executeUpdate();
-            connObj.close();            
+            conn.close();            
         } catch(Exception sqlException) {
             sqlException.printStackTrace();
         }
-        return "/newjsf1.xhtml?faces-redirect=true";
+        return "/newjsf1.xhtml";
     }
  
     public static String deleteCustomerRecordInDB(int customerId){
@@ -133,11 +134,11 @@ public class DatabaseOperation {
         try {
             pstmt = getConnection().prepareStatement("delete from CUSTOMER_INFO where customer_id = " + customerId);  
             pstmt.executeUpdate();  
-            connObj.close();
+            conn.close();
         } catch(Exception sqlException){
             sqlException.printStackTrace();
         }
-        return "/newjsf1.xhtml?faces-redirect=true";
+        return "/newjsf1.xhtml";
     }
 
    
